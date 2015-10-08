@@ -1,0 +1,12 @@
+#ifndef XKCOMMON_GLOBAL_H
+#define XKCOMMON_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(XKCOMMON_LIBRARY)
+#  define XKCOMMONSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define XKCOMMONSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // XKCOMMON_GLOBAL_H

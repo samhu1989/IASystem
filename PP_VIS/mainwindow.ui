@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
+  <property name="windowTitle">
+   <string>VIS</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QMdiArea" name="mdiArea">
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::PreventContextMenu</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="contextMenuPolicy">
+    <enum>Qt::PreventContextMenu</enum>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>64</width>
+     <height>64</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionFormatTool"/>
+   <addaction name="actionSegment"/>
+   <addaction name="actionViewFeature"/>
+   <addaction name="actionMapping"/>
+   <addaction name="actionICP"/>
+  </widget>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="../PP_DataViewer/rc.qrc">
+     <normaloff>:/button/rc/catpng_019.png</normaloff>:/button/rc/catpng_019.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open Dump</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../PP_DataViewer/rc.qrc">
+     <normaloff>:/button/rc/catpng_018.png</normaloff>:/button/rc/catpng_018.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="toolTip">
+    <string>Save Dump</string>
+   </property>
+  </action>
+  <action name="actionSegment">
+   <property name="icon">
+    <iconset resource="../PP_DataViewer/rc.qrc">
+     <normaloff>:/button/rc/catpng_004.png</normaloff>:/button/rc/catpng_004.png</iconset>
+   </property>
+   <property name="text">
+    <string>Segment</string>
+   </property>
+   <property name="toolTip">
+    <string>Do Segment</string>
+   </property>
+  </action>
+  <action name="actionViewFeature">
+   <property name="icon">
+    <iconset resource="rc.qrc">
+     <normaloff>:/button/rc/bar-chart.png</normaloff>:/button/rc/bar-chart.png</iconset>
+   </property>
+   <property name="text">
+    <string>View Feature</string>
+   </property>
+   <property name="toolTip">
+    <string>View Feature</string>
+   </property>
+  </action>
+  <action name="actionMapping">
+   <property name="icon">
+    <iconset resource="rc.qrc">
+     <normaloff>:/button/rc/graph.png</normaloff>:/button/rc/graph.png</iconset>
+   </property>
+   <property name="text">
+    <string>Mapping</string>
+   </property>
+   <property name="toolTip">
+    <string>Build Segment Mapping</string>
+   </property>
+  </action>
+  <action name="actionICP">
+   <property name="icon">
+    <iconset>
+     <normalon>:/button/rc/catpng_002.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>ICP</string>
+   </property>
+   <property name="toolTip">
+    <string>Manually ICP</string>
+   </property>
+  </action>
+  <action name="actionFormatTool">
+   <property name="icon">
+    <iconset resource="../PP_DataViewer/rc.qrc">
+     <normaloff>:/button/rc/catpng_009.png</normaloff>:/button/rc/catpng_009.png</iconset>
+   </property>
+   <property name="text">
+    <string>FormatTool</string>
+   </property>
+   <property name="toolTip">
+    <string>Format Convert Tools</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../PP_DataViewer/rc.qrc"/>
+  <include location="rc.qrc"/>
+ </resources>
+ <connections/>
+</ui>
