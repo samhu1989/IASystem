@@ -1,9 +1,10 @@
 #include "xkoverseg.h"
 #include <QCoreApplication>
 #include <QByteArray>
-#include <QDataStream>
 #include "supervoxel_clustering.hpp"
 #include <pcl/io/ply_io.h>
+#include <QDir>
+#include <QFileInfo>
 XKOverSeg::XKOverSeg(QObject *parent) : QObject(parent)
 {
     voxel_resolution = 0.008f;
@@ -39,6 +40,7 @@ void XKOverSeg::init(void)
         connect(_Socket,SIGNAL(disconnected()),this,SLOT(disconnected()));
         _Socket->connectToServer("XK");
     }
+    parse();
 }
 
 void XKOverSeg::connected(void)
@@ -61,15 +63,56 @@ void XKOverSeg::respond(void)
 
 }
 
+void XKOverSeg::parse(void)
+{
+    QStringList arguments = QCoreApplication::arguments();
+    _InputPath = arguments[1].toStdString();
+    _OutputPath = arguments[2].toStdString();
+    if( arguments.size() > 3 )
+    {
+        _Suffix = arguments[3].toStdString();
+    }
+    if( arguments.size() > 4 )
+    {
+        _Prefix = arguments[4].toStdString();
+    }
+    if( arguments.size() > 5 )
+    {
+        voxel_resolution = arguments[5].toFloat();
+    }
+    if( arguments.size() > 6 )
+    {
+        seed_resolution = arguments[6].toFloat();
+    }
+    if( arguments.size() > 7 )
+    {
+        color_importance = arguments[7].toFloat();
+    }
+    if( arguments.size() > 8 )
+    {
+        spatial_importance = arguments[8].toFloat();
+    }
+    if( arguments.size() > 9 )
+    {
+        normal_importance = arguments[9].toFloat();
+    }
+}
+
 void XKOverSeg::work(void)
 {
-    bool done = false;
-    std::string input_file;
-    while(!done)
+    QStringList inputList = getInputFiles();
+    while(!inputList.isEmpty())
     {
+        _CurrentFileName = inputList.takeFirst();
         FullPointCloud::Ptr cloud(new FullPointCloud);
-        pcl::io::loadPLYFile<FullPoint>(input_file,*cloud);
+        cloud->clear();
+        pcl::io::loadPLYFile<FullPoint>(_CurrentFileName.toStdString(),*cloud);
+        if(cloud->empty()){
+            QCoreApplication::exit(-1);
+            return;
+        }
         getSuperVoxel(cloud);
+        saveOutputFiles();
         if(updateToMonitor)toMonitor();
         QCoreApplication::processEvents();
     }
@@ -83,7 +126,37 @@ void XKOverSeg::toMonitor(void)
 
 QStringList XKOverSeg::getInputFiles(void)
 {
-    return QStringList();
+    QDir dir;
+    dir.setPath(QString::fromStdString(_InputPath));
+    QStringList filter;
+    filter<<(QString::fromStdString(_Prefix)+"*"+QString::fromStdString(_Suffix));
+    return dir.entryList(filter,QDir::Files|QDir::NoSymLinks|QDir::NoDotAndDotDot,QDir::DirsLast);
+}
+
+void XKOverSeg::saveOutputFiles()
+{
+    QDir dir;
+    dir.setPath(QString::fromStdString(_OutputPath));
+    QFileInfo info(_CurrentFileName);
+    QString filename = info.baseName();
+    filename = dir.absoluteFilePath(filename+".svx");
+    QFile file;
+    file.setFileName(filename);
+    file.open(QIODevice::WriteOnly);
+    QDataStream stream(&file);
+    saveClusters(stream,supervoxel_clusters);
+    saveAdjacency(stream,supervoxel_adjacency);
+    file.close();
+}
+
+void XKOverSeg::saveClusters(QDataStream&,SuperVoxelClusters&)
+{
+    ;
+}
+
+void XKOverSeg::saveAdjacency(QDataStream&,SuperVoxelAdjacency&)
+{
+    ;
 }
 
 void XKOverSeg::getSuperVoxel(FullPointCloud::Ptr cloud)
