@@ -20,24 +20,7 @@ SOURCES += main.cpp \
     xkoverseg.cpp
 
 HEADERS += \
-    octree/boost.h \
-    octree/octree_pointcloud_adjacency.h \
-    octree/octree_pointcloud_adjacency_container.h \
-    octree/octree_pointcloud.h \
-    octree/octree_base.h \
-    octree/octree_container.h \
-    octree/octree_iterator.h \
-    octree/octree_key.h \
-    octree/octree_nodes.h \
-    octree/impl/octree_base.hpp \
-    octree/impl/octree_iterator.hpp \
-    octree/impl/octree_pointcloud.hpp \
-    octree/impl/octree_pointcloud_adjacency.hpp \
-    octree/impl/octree_search.hpp\
-    xkoverseg.h \
-    supervoxel_clustering.h \
-    supervoxel_clustering.hpp \
-    octree/octree_search.h
+    xkoverseg.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$DESTDIR/ -lCommon
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$DESTDIR/ -lCommon
@@ -71,3 +54,9 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../../PC
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../../PCL_1.6.0/lib/ -lpcl_common_release \
 -lpcl_search_release -lpcl_kdtree_release -lpcl_io_release -lpcl_visualization_release -lpcl_features_release -lpcl_filters_release \
 -lpcl_segmentation_release
+
+win32:CONFIG(release, debug|release): LIBS += -L$$DESTDIR/ -lXKCommon
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$DESTDIR/ -lXKCommon
+
+INCLUDEPATH += $$PWD/../XKCommon
+DEPENDPATH += $$PWD/../XKCommon

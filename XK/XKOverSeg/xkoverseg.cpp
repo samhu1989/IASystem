@@ -144,20 +144,12 @@ void XKOverSeg::saveOutputFiles()
     file.setFileName(filename);
     file.open(QIODevice::WriteOnly);
     QDataStream stream(&file);
-    saveClusters(stream,supervoxel_clusters);
-    saveAdjacency(stream,supervoxel_adjacency);
+    XKCommon::saveClusters(stream,supervoxel_clusters);
+    XKCommon::saveAdjacency(stream,supervoxel_adjacency);
     file.close();
 }
 
-void XKOverSeg::saveClusters(QDataStream&,SuperVoxelClusters&)
-{
-    ;
-}
 
-void XKOverSeg::saveAdjacency(QDataStream&,SuperVoxelAdjacency&)
-{
-    ;
-}
 
 void XKOverSeg::getSuperVoxel(FullPointCloud::Ptr cloud)
 {

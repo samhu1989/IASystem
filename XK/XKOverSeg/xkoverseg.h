@@ -12,12 +12,12 @@
 #include <memory>
 #include <map>
 #include <QDataStream>
+#include "xkcommon.h"
 class XKOverSeg : public QObject
 {
     Q_OBJECT
 public:
-    typedef std::map<uint32_t,pcl::Supervoxel<FullPoint>::Ptr> SuperVoxelClusters;
-    typedef std::multimap<uint32_t,uint32_t> SuperVoxelAdjacency;
+
     explicit XKOverSeg(QObject *parent = 0);
     ~XKOverSeg();
     void init(void);
@@ -27,8 +27,7 @@ protected:
     void parse(void);
     QStringList getInputFiles(void);
     void saveOutputFiles();
-    void saveClusters(QDataStream&,SuperVoxelClusters&);
-    void saveAdjacency(QDataStream&,SuperVoxelAdjacency&);
+
 
 protected slots:
     void disconnected(void);
@@ -53,8 +52,8 @@ float spatial_importance;
 float normal_importance;
 
 std::shared_ptr<pcl::SupervoxelClustering<FullPoint>> super;
-SuperVoxelClusters supervoxel_clusters;
-SuperVoxelAdjacency supervoxel_adjacency;
+XKCommon::SuperVoxelClusters supervoxel_clusters;
+XKCommon::SuperVoxelAdjacency supervoxel_adjacency;
 
 bool updateToMonitor;
 

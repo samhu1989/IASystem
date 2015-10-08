@@ -51,8 +51,6 @@
 #include <boost/ptr_container/ptr_list.hpp>
 #include "octree/boost.h"
 
-
-
 //DEBUG TODO REMOVE
 #include <pcl/common/time.h>
 
