@@ -15,11 +15,17 @@ CONFIG   -= app_bundle
 CONFIG(release, debug|release): DESTDIR = $$OUT_PWD/../../../IASystem_RunTime/bin
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    oversegview.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    oversegview.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    oversegview.ui
+
+RESOURCES += \
+    rc.qrc
 
 win32:CONFIG(release, debug|release): LIBS += -L$$DESTDIR/ -lCommon
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$DESTDIR/ -lCommon
@@ -50,5 +56,4 @@ DEPENDPATH += $$PWD/../../../../../../../PCL_1.6.0/3rdParty/VTK/include/vtk-5.8
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../../PCL_1.6.0/3rdParty/Boost/lib/ -lboost_date_time-vc100-mt-1_49
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../../PCL_1.6.0/3rdParty/Boost/lib/ -lboost_date_time-vc100-mt-gd-1_49
 
-RESOURCES += \
-    rc.qrc
+
