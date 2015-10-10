@@ -188,6 +188,7 @@ void XKOverSeg::getSuperVoxel(FullPointCloud::Ptr cloud)
     pcl::PointCloud<pcl::Normal>::Ptr _CloudNT(new pcl::PointCloud<pcl::Normal>);
     pcl::copyPointCloud(*cloud,*_CloudT);
     pcl::copyPointCloud(*cloud,*_CloudNT);
+    super->setUseSingleCameraTransform(false);
     super->setInputCloud(_CloudT);
     super->setNormalCloud(_CloudNT);
     super->setSpatialImportance(spatial_importance);

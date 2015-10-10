@@ -36,14 +36,14 @@
  * $Id$
  */
 
-#ifndef PCL_OCTREE_BASE_HPP
-#define PCL_OCTREE_BASE_HPP
+#ifndef PCL_OCTREE_BASE_HPPNEW
+#define PCL_OCTREE_BASE_HPPNEW
 
 #include <vector>
 
 #include <pcl/impl/instantiate.hpp>
 #include <pcl/point_types.h>
-//#include <pcl/octree/octree.h>
+#include <pcl/octree/octree.h>
 
 namespace pcl
 {
@@ -291,6 +291,7 @@ namespace pcl
       {
         // index to branch child
         unsigned char child_idx;
+
         // find branch child from key
         child_idx = key_arg.getChildIdxWithDepthMask (depth_mask_arg);
 
@@ -315,7 +316,7 @@ namespace pcl
             LeafNode* leaf_node = createLeafChild (*branch_arg, child_idx);
             return_leaf_arg = leaf_node;
             parent_of_leaf_arg = branch_arg;
-            leaf_count_++;
+            this->leaf_count_++;
           }
         }
         else
@@ -567,7 +568,7 @@ namespace pcl
   }
 }
 
-#define PCL_INSTANTIATE_OctreeBase(T) template class PCL_EXPORTS pcl::octree_new::OctreeBase<T>;
+#define PCL_INSTANTIATE_OctreeBase(T) template class PCL_EXPORTS pcl::octree::OctreeBase<T>;
 
 #endif
 

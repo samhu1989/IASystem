@@ -1,12 +1,6 @@
 #include "xkcommon.h"
 #include <QMultiHash>
 #include <QByteArray>
-#include "supervoxel_clustering.hpp"
-#include "octree/impl/octree_base.hpp"
-#include "octree/impl/octree_pointcloud.hpp"
-
-template class pcl::Supervoxel<FullPoint>;
-template class pcl::SupervoxelClustering<FullPoint>;
 
 void XKCommon::saveClusters(QDataStream&stream,SuperVoxelClusters&clusters)
 {

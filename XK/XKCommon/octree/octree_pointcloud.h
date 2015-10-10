@@ -39,7 +39,8 @@
 #ifndef PCL_OCTREE_POINTCLOUD_H
 #define PCL_OCTREE_POINTCLOUD_H
 
-#include "octree/octree_base.h"
+#include "octree_base.h"
+//#include "octree2buf_base.h"
 
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
@@ -385,7 +386,7 @@ namespace pcl
          * \param[out] max_pt upper bound of voxel
          */
         inline void
-        getVoxelBounds (OctreeIteratorBase<OctreeT>& iterator, Eigen::Vector3f &min_pt, Eigen::Vector3f &max_pt)
+        getVoxelBounds (const OctreeIteratorBase<OctreeT>& iterator, Eigen::Vector3f &min_pt, Eigen::Vector3f &max_pt) const
         {
           this->genVoxelBoundsFromOctreeKey (iterator.getCurrentOctreeKey (),
               iterator.getCurrentOctreeDepth (), min_pt, max_pt);
@@ -572,6 +573,6 @@ namespace pcl
   }
 }
 
-//#include "octree/impl/octree_pointcloud.hpp"
+#include <octree/impl/octree_pointcloud.hpp>
 #endif
 

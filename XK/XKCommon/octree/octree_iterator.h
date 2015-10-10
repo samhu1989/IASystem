@@ -36,15 +36,15 @@
  * $Id$
  */
 
-#ifndef PCL_OCTREE_ITERATOR_H
-#define PCL_OCTREE_ITERATOR_H
+#ifndef PCL_OCTREE_ITERATOR_HNEW
+#define PCL_OCTREE_ITERATOR_HNEW
 
 #include <cstddef>
 #include <vector>
 #include <deque>
 
-#include "octree/octree_nodes.h"
-#include "octree/octree_key.h"
+#include "octree_nodes.h"
+#include "octree_key.h"
 
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
@@ -340,7 +340,9 @@ namespace pcl
             const OctreeKey& key = getCurrentOctreeKey();
             // calculate integer id with respect to octree key
             unsigned int depth = octree_->getTreeDepth ();
-            id = key.x << (depth * 2) | key.y << (depth * 1) | key.z << (depth * 0);
+            id = static_cast<unsigned long> (key.x) << (depth * 2)
+               | static_cast<unsigned long> (key.y) << (depth * 1)
+               | static_cast<unsigned long> (key.z) << (depth * 0);
           }
 
           return id;

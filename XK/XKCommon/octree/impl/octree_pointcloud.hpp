@@ -41,7 +41,7 @@
 
 #include <vector>
 #include <assert.h>
-#include "octree/octree_pointcloud.h"
+
 #include <pcl/common/common.h>
 
 
@@ -63,12 +63,12 @@ pcl::octree_new::OctreePointCloud<PointT, LeafContainerT, BranchContainerT, Octr
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT, typename LeafContainerT, typename BranchContainerT, typename OctreeT> void
-pcl::octree_new::OctreePointCloud<PointT, LeafContainerT, BranchContainerT, OctreeT>::addPointsFromInputCloud (void)
+pcl::octree_new::OctreePointCloud<PointT, LeafContainerT, BranchContainerT, OctreeT>::addPointsFromInputCloud ()
 {
   size_t i;
+
   if (indices_)
   {
-
     for (std::vector<int>::const_iterator current = indices_->begin (); current != indices_->end (); ++current)
     {
       assert( (*current>=0) && (*current < static_cast<int> (input_->points.size ())));
@@ -571,6 +571,7 @@ pcl::octree_new::OctreePointCloud<PointT, LeafContainerT, BranchContainerT, Octr
   LeafNode* leaf_node;
   BranchNode* parent_branch_of_leaf_node;
   unsigned int depth_mask = this->createLeafRecursive (key, this->depth_mask_ ,this->root_node_, leaf_node, parent_branch_of_leaf_node);
+
   if (this->dynamic_depth_enabled_ && depth_mask)
   {
     // get amount of objects in leaf container

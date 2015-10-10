@@ -36,8 +36,8 @@
  * $Id$
  */
 
-#ifndef PCL_OCTREE_NODE_H
-#define PCL_OCTREE_NODE_H
+#ifndef PCL_OCTREE_NODE_HNEW
+#define PCL_OCTREE_NODE_HNEW
 
 #include <cstddef>
 
@@ -50,7 +50,7 @@
 
 #include <pcl/pcl_macros.h>
 
-#include "octree/octree_container.h"
+#include "octree_container.h"
 
 namespace pcl
 {

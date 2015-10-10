@@ -11,7 +11,9 @@ TEMPLATE = lib
 
 DEFINES += XKCOMMON_LIBRARY
 
-SOURCES += xkcommon.cpp
+SOURCES += \
+    supervoxel_clustering.cpp \
+    xkcommon.cpp
 
 CONFIG(release, debug|release): DESTDIR = $$OUT_PWD/../../../IASystem_RunTime/bin
 
@@ -23,9 +25,6 @@ HEADERS += xkcommon.h\
     octree/impl/octree_iterator.hpp \
     octree/impl/octree_pointcloud.hpp \
     octree/impl/octree_pointcloud_adjacency.hpp \
-    octree/impl/octree_pointcloud_voxelcentroid.hpp \
-    octree/impl/octree_search.hpp \
-    octree/boost.h \
     octree/octree_base.h \
     octree/octree_container.h \
     octree/octree_iterator.h \
@@ -33,8 +32,7 @@ HEADERS += xkcommon.h\
     octree/octree_nodes.h \
     octree/octree_pointcloud.h \
     octree/octree_pointcloud_adjacency.h \
-    octree/octree_pointcloud_adjacency_container.h \
-    octree/octree_search.h
+    octree/octree_pointcloud_adjacency_container.h
 
 unix {
     target.path = /usr/lib

@@ -41,7 +41,7 @@
 
 #include <vector>
 #include <assert.h>
-#include "octree/octree_iterator.h"
+
 #include <pcl/common/common.h>
 
 namespace pcl

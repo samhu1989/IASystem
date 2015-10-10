@@ -38,7 +38,7 @@
 #ifndef PCL_OCTREE_POINTCLOUD_ADJACENCY_HPP_
 #define PCL_OCTREE_POINTCLOUD_ADJACENCY_HPP_
 
-#include "octree/octree_pointcloud_adjacency.h"
+#include <octree/octree_pointcloud_adjacency.h>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template<typename PointT, typename LeafContainerT, typename BranchContainerT> 

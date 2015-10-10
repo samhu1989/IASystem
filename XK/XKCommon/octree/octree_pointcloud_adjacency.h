@@ -42,12 +42,12 @@
 
 #include <pcl/console/print.h>
 #include <pcl/common/geometry.h>
-#include "octree/boost.h"
-#include "octree/octree_pointcloud.h"
-#include "octree/octree_pointcloud_adjacency_container.h"
-
+#include <pcl/octree/octree_impl.h>
+#include <octree/octree_pointcloud_adjacency_container.h>
+#include <octree/octree_pointcloud.h>
 #include <set>
 #include <list>
+#include <boost/graph/adjacency_list.hpp>
 
 namespace pcl
 {
@@ -131,7 +131,8 @@ namespace pcl
 
         inline iterator begin () { return (leaf_vector_.begin ()); }
         inline iterator end ()   { return (leaf_vector_.end ()); }
-
+        inline LeafContainerT* at (size_t idx)   { return leaf_vector_.at (idx); }
+        
         // Size of neighbors
         inline size_t size () const { return leaf_vector_.size (); }
 
@@ -246,9 +247,7 @@ namespace pcl
 
 }
 
-//#ifdef PCL_NO_PRECOMPILE
-#include "octree/impl/octree_pointcloud_adjacency.hpp"
-//#endif
 
+#include <octree/impl/octree_pointcloud_adjacency.hpp>
 #endif // PCL_OCTREE_POINTCLOUD_ADJACENCY_H_
 

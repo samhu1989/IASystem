@@ -36,16 +36,16 @@
  * $Id$
  */
 
-#ifndef PCL_OCTREE_TREE_BASE_H
-#define PCL_OCTREE_TREE_BASE_H
+#ifndef PCL_OCTREE_TREE_BASE_HNEW
+#define PCL_OCTREE_TREE_BASE_HNEW
 
 #include <cstddef>
 #include <vector>
 
-#include "octree/octree_nodes.h"
-#include "octree/octree_container.h"
-#include "octree/octree_key.h"
-#include "octree/octree_iterator.h"
+#include "octree_nodes.h"
+#include "octree_container.h"
+#include "octree_key.h"
+#include "octree_iterator.h"
 
 namespace pcl
 {
@@ -594,7 +594,7 @@ namespace pcl
   }
 }
 
-//#include "octree/impl/octree_base.hpp"
+#include "octree/impl/octree_base.hpp"
 
 #endif
 
