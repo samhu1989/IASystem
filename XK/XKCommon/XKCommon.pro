@@ -19,7 +19,6 @@ HEADERS += xkcommon.h\
         xkcommon_global.h \
     supervoxel_clustering.h \
     supervoxel_clustering.hpp \
-    octree/impl/octree2buf_base.hpp \
     octree/impl/octree_base.hpp \
     octree/impl/octree_iterator.hpp \
     octree/impl/octree_pointcloud.hpp \
@@ -27,22 +26,14 @@ HEADERS += xkcommon.h\
     octree/impl/octree_pointcloud_voxelcentroid.hpp \
     octree/impl/octree_search.hpp \
     octree/boost.h \
-    octree/octree2buf_base.h \
     octree/octree_base.h \
     octree/octree_container.h \
     octree/octree_iterator.h \
     octree/octree_key.h \
-    octree/octree_node_pool.h \
     octree/octree_nodes.h \
     octree/octree_pointcloud.h \
     octree/octree_pointcloud_adjacency.h \
     octree/octree_pointcloud_adjacency_container.h \
-    octree/octree_pointcloud_changedetector.h \
-    octree/octree_pointcloud_density.h \
-    octree/octree_pointcloud_occupancy.h \
-    octree/octree_pointcloud_pointvector.h \
-    octree/octree_pointcloud_singlepoint.h \
-    octree/octree_pointcloud_voxelcentroid.h \
     octree/octree_search.h
 
 unix {
@@ -81,4 +72,4 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../../PC
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../../PCL_1.6.0/lib/ -lpcl_common_release \
 -lpcl_search_release -lpcl_kdtree_release -lpcl_io_release -lpcl_visualization_release -lpcl_features_release -lpcl_filters_release \
--lpcl_segmentation_release
+-lpcl_segmentation_release -lpcl_octree_release

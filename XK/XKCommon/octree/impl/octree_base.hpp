@@ -43,7 +43,7 @@
 
 #include <pcl/impl/instantiate.hpp>
 #include <pcl/point_types.h>
-#include <pcl/octree/octree.h>
+//#include <pcl/octree/octree.h>
 
 namespace pcl
 {
@@ -291,7 +291,6 @@ namespace pcl
       {
         // index to branch child
         unsigned char child_idx;
-
         // find branch child from key
         child_idx = key_arg.getChildIdxWithDepthMask (depth_mask_arg);
 
@@ -316,7 +315,7 @@ namespace pcl
             LeafNode* leaf_node = createLeafChild (*branch_arg, child_idx);
             return_leaf_arg = leaf_node;
             parent_of_leaf_arg = branch_arg;
-            this->leaf_count_++;
+            leaf_count_++;
           }
         }
         else

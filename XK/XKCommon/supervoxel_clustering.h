@@ -45,7 +45,8 @@
 #include <pcl/pcl_base.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
-#include "octree/octree_search.h"
+#include <pcl/octree/octree_search.h>
+//#include "octree/octree_search.h"
 #include "octree/octree_pointcloud_adjacency.h"
 #include <pcl/search/search.h>
 #include <boost/ptr_container/ptr_list.hpp>
@@ -170,7 +171,7 @@ namespace pcl
       typedef typename pcl::octree_new::OctreePointCloudAdjacency<PointT, LeafContainerT> OctreeAdjacencyT;
 
       typedef typename pcl::search::KdTree<PointT> KdTreeT;
-      typedef typename pcl::octree_new::OctreePointCloudSearch<PointT> OctreeSearchT;
+      typedef typename pcl::octree::OctreePointCloudSearch<PointT> OctreeSearchT;
       typedef boost::shared_ptr<std::vector<int> > IndicesPtr;
            
       using PCLBase <PointT>::initCompute;

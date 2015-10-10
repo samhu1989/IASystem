@@ -572,6 +572,6 @@ namespace pcl
   }
 }
 
-#include "octree/impl/octree_pointcloud.hpp"
+//#include "octree/impl/octree_pointcloud.hpp"
 #endif
 

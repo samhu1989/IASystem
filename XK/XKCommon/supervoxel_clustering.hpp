@@ -99,7 +99,6 @@ pcl::SupervoxelClustering<PointT>::extract (std::map<uint32_t,typename Supervoxe
 {
   //timer_.reset ();
   //double t_start = timer_.getTime ();
-  //std::cout << "Init compute  \n";
   bool segmentation_is_possible = initCompute ();
   if ( !segmentation_is_possible )
   {
@@ -107,7 +106,6 @@ pcl::SupervoxelClustering<PointT>::extract (std::map<uint32_t,typename Supervoxe
     return;
   }
   
-  //std::cout << "Preparing for segmentation \n";
   segmentation_is_possible = prepareForSegmentation ();
   if ( !segmentation_is_possible )
   {
@@ -116,7 +114,6 @@ pcl::SupervoxelClustering<PointT>::extract (std::map<uint32_t,typename Supervoxe
   }
   
   //double t_prep = timer_.getTime ();
-  //std::cout << "Placing Seeds" << std::endl;
   std::vector<PointT, Eigen::aligned_allocator<PointT> > seed_points;
   selectInitialSupervoxelSeeds (seed_points);
   //std::cout << "Creating helpers "<<std::endl;
@@ -129,7 +126,6 @@ pcl::SupervoxelClustering<PointT>::extract (std::map<uint32_t,typename Supervoxe
   expandSupervoxels (max_depth);
   //double t_iterate = timer_.getTime ();
     
-  //std::cout << "Making Supervoxel structures" << std::endl;
   makeSupervoxels (supervoxel_clusters);
   //double t_supervoxels = timer_.getTime ();
   
@@ -195,7 +191,7 @@ pcl::SupervoxelClustering<PointT>::prepareForSegmentation ()
   
   //Compute normals and insert data for centroids into data field of octree
   //double normals_start = timer_.getTime ();
-  computeVoxelData ();
+  computeVoxelData();
   //double normals_end = timer_.getTime ();
   //std::cout << "Time elapsed finding normals and pushing into octree ="<<normals_end-normals_start<<" ms\n";
     
@@ -367,15 +363,16 @@ pcl::SupervoxelClustering<PointT>::selectInitialSupervoxelSeeds (std::vector<Poi
   //TODO THIS IS BAD - SEEDING SHOULD BE BETTER
   //TODO Switch to assigning leaves! Don't use Octree!
   
- // std::cout << "Size of centroid cloud="<<voxel_centroid_cloud_->size ()<<", seeding resolution="<<seed_resolution_<<"\n";
+  std::cerr << "Size of centroid cloud="<<voxel_centroid_cloud_->size ()<<", seeding resolution="<<seed_resolution_<<"\n";
   //Initialize octree with voxel centroids
   OctreeSearchT seed_octree (seed_resolution_);
   seed_octree.setInputCloud (voxel_centroid_cloud_);
-  seed_octree.addPointsFromInputCloud ();
- // std::cout << "Size of octree ="<<seed_octree.getLeafCount ()<<"\n";
+//  std::cerr << "Size of octree ="<<seed_octree.getLeafCount()<<"\n";
+  seed_octree.addPointsFromInputCloud();
+//  std::cerr << "Size of octree ="<<seed_octree.getLeafCount()<<"\n";
   std::vector<PointT, Eigen::aligned_allocator<PointT> > voxel_centers; 
   int num_seeds = seed_octree.getOccupiedVoxelCenters(voxel_centers); 
-  //std::cout << "Number of seed points before filtering="<<voxel_centers.size ()<<std::endl;
+//  std::cerr << "Number of seed points before filtering="<<voxel_centers.size ()<<std::endl;
   
   std::vector<int> seed_indices_orig;
   seed_indices_orig.resize (num_seeds, 0);

@@ -55,8 +55,8 @@ win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../../PCL_1
 -lpcl_search_release -lpcl_kdtree_release -lpcl_io_release -lpcl_visualization_release -lpcl_features_release -lpcl_filters_release \
 -lpcl_segmentation_release
 
-win32:CONFIG(release, debug|release): LIBS += -L$$DESTDIR/ -lXKCommon
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$DESTDIR/ -lXKCommon
+win32:CONFIG(release, debug|release): LIBS += -L$$DESTDIR/  -lXKCommon
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$DESTDIR/   -lXKCommon
 
 INCLUDEPATH += $$PWD/../XKCommon
 DEPENDPATH += $$PWD/../XKCommon

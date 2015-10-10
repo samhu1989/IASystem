@@ -1,8 +1,12 @@
 #include "xkcommon.h"
 #include <QMultiHash>
 #include <QByteArray>
-template class PCL_EXPORTS pcl::Supervoxel<FullPoint>;
-template class PCL_EXPORTS pcl::SupervoxelClustering<FullPoint>;
+#include "supervoxel_clustering.hpp"
+#include "octree/impl/octree_base.hpp"
+#include "octree/impl/octree_pointcloud.hpp"
+
+template class pcl::Supervoxel<FullPoint>;
+template class pcl::SupervoxelClustering<FullPoint>;
 
 void XKCommon::saveClusters(QDataStream&stream,SuperVoxelClusters&clusters)
 {
@@ -28,13 +32,13 @@ void XKCommon::saveAdjacency(QDataStream&stream,SuperVoxelAdjacency&adjacency)
 
 void XKCommon::saveSuperVoxel(QDataStream&stream,SuperVoxel&voxel)
 {
-    savePointXYZRGBA(stream,voxel.centroid_);
-    saveFullPointCloud(stream,*voxel.voxels_);
+    saveColorPoint(stream,voxel.centroid_);
+    saveColorPointCloud(stream,*voxel.voxels_);
     saveNormal(stream,voxel.normal_);
     saveNormalPointCloud(stream,*voxel.normals_);
 }
 
-void XKCommon::savePointXYZRGBA(QDataStream&stream,pcl::PointXYZRGBA&point)
+void XKCommon::saveColorPoint(QDataStream&stream,ColorPoint&point)
 {
     stream<<point.x;
     stream<<point.y;
@@ -42,26 +46,14 @@ void XKCommon::savePointXYZRGBA(QDataStream&stream,pcl::PointXYZRGBA&point)
     stream<<point.rgba;
 }
 
-void XKCommon::saveFullPoint(QDataStream&stream,FullPoint&point)
-{
-    stream<<point.x;
-    stream<<point.y;
-    stream<<point.z;
-    stream<<point.rgba;
-    stream<<point.normal_x;
-    stream<<point.normal_y;
-    stream<<point.normal_z;
-    stream<<point.curvature;
-}
-
-void XKCommon::saveFullPointCloud(QDataStream&stream,FullPointCloud&cloud)
+void XKCommon::saveColorPointCloud(QDataStream&stream,ColorPointCloud&cloud)
 {
     stream<<cloud.width;
     stream<<cloud.height;
     stream<<cloud.size();
-    foreach(FullPoint p,cloud)
+    foreach(ColorPoint p,cloud)
     {
-        saveFullPoint(stream,p);
+        saveColorPoint(stream,p);
     }
 }
 
@@ -70,6 +62,7 @@ void XKCommon::saveNormal(QDataStream&stream,pcl::Normal&norm)
     stream<<norm.normal_x;
     stream<<norm.normal_y;
     stream<<norm.normal_z;
+    stream<<norm.curvature;
 }
 
 void XKCommon::saveNormalPointCloud(QDataStream&stream,pcl::PointCloud<pcl::Normal>&cloud)
@@ -113,13 +106,13 @@ void XKCommon::loadAdjacency(QDataStream&stream,SuperVoxelAdjacency&adjacency)
 
 void XKCommon::loadSuperVoxel(QDataStream&stream,SuperVoxel&voxel)
 {
-    loadPointXYZRGBA(stream,voxel.centroid_);
-    loadFullPointCloud(stream,*voxel.voxels_);
+    loadColorPoint(stream,voxel.centroid_);
+    loadColorPointCloud(stream,*voxel.voxels_);
     loadNormal(stream,voxel.normal_);
     loadNormalPointCloud(stream,*voxel.normals_);
 }
 
-void XKCommon::loadPointXYZRGBA(QDataStream&stream,pcl::PointXYZRGBA&point)
+void XKCommon::loadColorPoint(QDataStream&stream,pcl::PointXYZRGBA&point)
 {
     stream>>point.x;
     stream>>point.y;
@@ -127,29 +120,17 @@ void XKCommon::loadPointXYZRGBA(QDataStream&stream,pcl::PointXYZRGBA&point)
     stream>>point.rgba;
 }
 
-void XKCommon::loadFullPoint(QDataStream&stream,FullPoint&point)
-{
-    stream>>point.x;
-    stream>>point.y;
-    stream>>point.z;
-    stream>>point.rgba;
-    stream>>point.normal_x;
-    stream>>point.normal_y;
-    stream>>point.normal_z;
-    stream>>point.curvature;
-}
-
-void XKCommon::loadFullPointCloud(QDataStream&stream,FullPointCloud&cloud)
+void XKCommon::loadColorPointCloud(QDataStream&stream,ColorPointCloud&cloud)
 {
     stream>>cloud.width;
     stream>>cloud.height;
     int size;
     stream>>size;
     cloud.resize(size);
-    FullPointCloud::iterator iter;
+    ColorPointCloud::iterator iter;
     for(iter=cloud.begin();iter!=cloud.end();++iter)
     {
-        loadFullPoint(stream,*iter);
+        loadColorPoint(stream,*iter);
     }
 }
 
@@ -158,6 +139,7 @@ void XKCommon::loadNormal(QDataStream&stream,pcl::Normal&norm)
     stream>>norm.normal_x;
     stream>>norm.normal_y;
     stream>>norm.normal_z;
+    stream>>norm.curvature;
 }
 
 void XKCommon::loadNormalPointCloud(QDataStream&stream,pcl::PointCloud<pcl::Normal>&cloud)
@@ -174,3 +156,13 @@ void XKCommon::loadNormalPointCloud(QDataStream&stream,pcl::PointCloud<pcl::Norm
     }
 }
 
+QString XKCommon::getNativeArguments(Config& config,QStringList& keys)
+{
+    QString arguments;
+    while(!keys.empty())
+    {
+        arguments+=QString::fromStdString(config.getString(keys.takeFirst().toStdString()));
+        if( !keys.empty() && config.has( keys.front().toStdString() ) )arguments += " ";
+    }
+    return arguments;
+}

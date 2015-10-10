@@ -34,6 +34,7 @@ protected slots:
     void connected(void);
     void respond(void);
     void work(void);
+    void getNormal(FullPointCloud::Ptr);
     void getSuperVoxel(FullPointCloud::Ptr);
     void toMonitor(void);
 
@@ -51,7 +52,7 @@ float color_importance;
 float spatial_importance;
 float normal_importance;
 
-std::shared_ptr<pcl::SupervoxelClustering<FullPoint>> super;
+std::shared_ptr<pcl::SupervoxelClustering<pcl::PointXYZRGBA>> super;
 XKCommon::SuperVoxelClusters supervoxel_clusters;
 XKCommon::SuperVoxelAdjacency supervoxel_adjacency;
 

@@ -4,6 +4,7 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QMessageBox>
+#include "xkcommon.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -97,6 +98,11 @@ void MainWindow::finishOverSeg(int, QProcess::ExitStatus)
 
 void MainWindow::triggerOverSeg(void)
 {
+    if(!_Config)
+    {
+        QMessageBox::warning(this,tr("No Configuration"),tr("Please Load Configuration First"));
+        return;
+    }
     QProcess* p = new QProcess();
     connect(p,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(finishOverSeg(int,QProcess::ExitStatus)));
     connect(p,SIGNAL(readyReadStandardOutput()),this,SLOT(printProcessStdCout()));
@@ -105,6 +111,12 @@ void MainWindow::triggerOverSeg(void)
     connect(this,SIGNAL(destroyed()),p,SLOT(kill()));
     connect(this,SIGNAL(destroyed()),p,SLOT(deleteLater()));
     Pipe::inform("Starting Over-Segment");
+    QString arguments;
+    QStringList keys;
+    keys<<"oversegin"<<"oversegout"<<"oversegsuffix"<<"oversegprefix";
+    keys<<"voxelres"<<"seedres"<<"color_w"<<"spatial_w"<<"norm_w";
+    arguments = XKCommon::getNativeArguments(*_Config,keys);
+    p->setNativeArguments(arguments);
     p->start("./bin/XKOverSeg.exe");
 }
 

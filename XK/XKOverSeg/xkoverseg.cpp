@@ -1,10 +1,11 @@
 #include "xkoverseg.h"
 #include <QCoreApplication>
 #include <QByteArray>
-#include "supervoxel_clustering.hpp"
 #include <pcl/io/ply_io.h>
 #include <QDir>
 #include <QFileInfo>
+#include <QFileInfoList>
+#include <pcl/features/normal_3d_omp.h>
 XKOverSeg::XKOverSeg(QObject *parent) : QObject(parent)
 {
     voxel_resolution = 0.008f;
@@ -101,16 +102,28 @@ void XKOverSeg::parse(void)
 void XKOverSeg::work(void)
 {
     QStringList inputList = getInputFiles();
+    QDir dir;
     while(!inputList.isEmpty())
     {
         _CurrentFileName = inputList.takeFirst();
+        QString filepath = dir.relativeFilePath(QString::fromStdString(_InputPath)+"/"+_CurrentFileName);
+        Pipe::inform("Processing:");
+        std::cerr<<filepath.toStdString()<<std::endl;
         FullPointCloud::Ptr cloud(new FullPointCloud);
         cloud->clear();
-        pcl::io::loadPLYFile<FullPoint>(_CurrentFileName.toStdString(),*cloud);
+        if(filepath.endsWith(".ply")||filepath.endsWith(".PLY"))
+            pcl::io::loadPLYFile<FullPoint>(filepath.toStdString(),*cloud);
+        else
+        {
+            pcl::PointCloud<pcl::PointXYZRGBA> tmp;
+            pcl::io::loadPCDFile<pcl::PointXYZRGBA>(filepath.toStdString(),tmp);
+            pcl::copyPointCloud(tmp,*cloud);
+        }
         if(cloud->empty()){
             QCoreApplication::exit(-1);
             return;
         }
+        getNormal(cloud);
         getSuperVoxel(cloud);
         saveOutputFiles();
         if(updateToMonitor)toMonitor();
@@ -149,18 +162,41 @@ void XKOverSeg::saveOutputFiles()
     file.close();
 }
 
-
+void XKOverSeg::getNormal(FullPointCloud::Ptr cloud)
+{
+    pcl::search::Search<FullPoint>::Ptr tree = boost::shared_ptr<pcl::search::Search<FullPoint> > (new pcl::search::KdTree<FullPoint>);
+    pcl::NormalEstimationOMP<FullPoint,FullPoint> est;
+    est.setSearchMethod (tree);
+    est.setViewPoint(
+                std::numeric_limits<float>::max(),
+                std::numeric_limits<float>::max(),
+                std::numeric_limits<float>::max()
+                );
+    est.setKSearch(15);
+    est.setInputCloud(cloud);
+    est.compute(*cloud);
+}
 
 void XKOverSeg::getSuperVoxel(FullPointCloud::Ptr cloud)
 {
-    super = std::shared_ptr<pcl::SupervoxelClustering<FullPoint>>(
-                new pcl::SupervoxelClustering<FullPoint>(voxel_resolution,seed_resolution)
+    super = std::shared_ptr<pcl::SupervoxelClustering<pcl::PointXYZRGBA>>(
+                new pcl::SupervoxelClustering<pcl::PointXYZRGBA>(voxel_resolution,seed_resolution)
             );
-    super->setInputCloud(cloud);
+    std::cerr<<"input cloud size"<<cloud->size()<<std::endl;
+
+    pcl::PointCloud<pcl::PointXYZRGBA>::Ptr _CloudT(new pcl::PointCloud<pcl::PointXYZRGBA>);
+    pcl::PointCloud<pcl::Normal>::Ptr _CloudNT(new pcl::PointCloud<pcl::Normal>);
+    pcl::copyPointCloud(*cloud,*_CloudT);
+    pcl::copyPointCloud(*cloud,*_CloudNT);
+    super->setInputCloud(_CloudT);
+    super->setNormalCloud(_CloudNT);
     super->setSpatialImportance(spatial_importance);
     super->setColorImportance(color_importance);
     super->setNormalImportance(normal_importance);
     supervoxel_clusters.clear();
+    supervoxel_adjacency.clear();
     super->extract(supervoxel_clusters);
     super->getSupervoxelAdjacency(supervoxel_adjacency);
+    std::cerr<<"result cluster num:"<<supervoxel_clusters.size()<<std::endl;
+    std::cerr<<"result adjacency num:"<<supervoxel_adjacency.size()<<std::endl;
 }
