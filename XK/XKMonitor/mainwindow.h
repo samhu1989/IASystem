@@ -18,6 +18,12 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+signals:
+    void closeView(void);
+protected:
+    void view(QWidget*);
+
 protected slots:
     void loadConfig(void);
     void newSocket(void);
@@ -27,9 +33,13 @@ protected slots:
 
     void triggerOverSeg(void);
     void finishOverSeg(int,QProcess::ExitStatus);
+    void viewOverSeg(void);
+
     void printProcessStdCout(void);
     void printProcessStdCerr(void);
     void printProcessError(QProcess::ProcessError);
+
+    void informViewClosed(QObject*);
 private:
     Ui::MainWindow *ui;
     QLocalServer* _Server;

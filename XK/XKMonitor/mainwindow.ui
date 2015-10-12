@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
-    <height>359</height>
+    <width>524</width>
+    <height>402</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,6 +38,7 @@
    </attribute>
    <addaction name="actionLoadConfig"/>
    <addaction name="actionOverSeg"/>
+   <addaction name="actionOverSegView"/>
   </widget>
   <action name="actionLoadConfig">
    <property name="icon">
@@ -62,6 +63,18 @@
    </property>
    <property name="toolTip">
     <string>Over-Segment</string>
+   </property>
+  </action>
+  <action name="actionOverSegView">
+   <property name="icon">
+    <iconset resource="rc.qrc">
+     <normaloff>:/button/rc/oversegview.png</normaloff>:/button/rc/oversegview.png</iconset>
+   </property>
+   <property name="text">
+    <string>OverSegView</string>
+   </property>
+   <property name="toolTip">
+    <string>View Over-Segment</string>
    </property>
   </action>
  </widget>

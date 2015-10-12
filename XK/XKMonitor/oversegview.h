@@ -2,7 +2,10 @@
 #define OVERSEGVIEW_H
 
 #include <QWidget>
-
+#include "pipe.h"
+#include "xkcommon.h"
+#include <pcl/visualization/pcl_visualizer.h>
+#include <QVTKWidget.h>
 namespace Ui {
 class OverSegView;
 }
@@ -14,9 +17,13 @@ class OverSegView : public QWidget
 public:
     explicit OverSegView(QWidget *parent = 0);
     ~OverSegView();
-
+protected slots:
+    void showFromFile(void);
+    void showFromProc(void);
 private:
     Ui::OverSegView *ui;
+    QVTKWidget widget;
+    pcl::visualization::PCLVisualizer v;
 };
 
 #endif // OVERSEGVIEW_H

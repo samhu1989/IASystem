@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -60,3 +60,16 @@ win32: LIBS += -L$$DESTDIR/ -lXKCommon
 
 INCLUDEPATH += $$PWD/../XKCommon
 DEPENDPATH += $$PWD/../XKCommon
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../../PCL_1.6.0/lib/ -lpcl_common_release \
+-lpcl_search_release -lpcl_kdtree_release -lpcl_io_release -lpcl_visualization_release -lpcl_features_release -lpcl_filters_release \
+-lpcl_segmentation_release
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../../PCL_1.6.0/3rdParty/VTK/lib/vtk-5.8/  \
+-lvtkGraphics -lvtkverdict -lvtkImaging  -lvtkIO \
+-lvtkCommon -lvtkRendering \
+-lvtkpng -lvtktiff -lvtkzlib -lvtkjpeg -lvtkexpat -lvtkftgl -lvtkmetaio  \
+-lvtkFiltering -lvtkDICOMParser -lvtkNetCDF_cxx -lvtksqlite \
+-lvtkfreetype -lvtkexoIIc -lvtkNetCDF -lvtkHybrid -lQVTK -lvtkWidgets -lvtksys
+
+win32:CONFIG(release, debug|release): LIBS += -lAdvapi32

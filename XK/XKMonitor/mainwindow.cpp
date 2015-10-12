@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include "xkcommon.h"
+#include "oversegview.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -17,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_Server,SIGNAL(newConnection()),this,SLOT(newSocket()));
     connect(ui->actionLoadConfig,SIGNAL(triggered()),this,SLOT(loadConfig()));
     connect(ui->actionOverSeg,SIGNAL(triggered()),this,SLOT(triggerOverSeg()));
+    connect(ui->actionOverSegView,SIGNAL(triggered()),this,SLOT(viewOverSeg()));
 }
 
 MainWindow::~MainWindow()
@@ -143,4 +145,26 @@ void MainWindow::printProcessError(QProcess::ProcessError e)
     }else{
         Pipe::error("Unknown Error");
     }
+}
+
+void MainWindow::view(QWidget*w)
+{
+    emit closeView();
+    w->setAttribute(Qt::WA_DeleteOnClose,true);
+    connect(this,SIGNAL(closeView()),w,SLOT(close()));
+    connect(w,SIGNAL(destroyed(QObject*)),this,SLOT(informViewClosed(QObject*)));
+    ui->gridLayout->addWidget(w);
+}
+
+void MainWindow::viewOverSeg(void)
+{
+    OverSegView* w = new OverSegView(NULL);
+    w->setObjectName(QString("OversegView"));
+    view((QWidget*)w);
+}
+
+void MainWindow::informViewClosed(QObject* o)
+{
+    Pipe::inform("View Closed:");
+    std::cerr<<o->objectName().toStdString()<<std::endl;
 }

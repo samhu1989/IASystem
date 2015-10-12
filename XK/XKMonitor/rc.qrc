@@ -110,5 +110,6 @@
         <file>rc/weather-forecast-13.png</file>
         <file>rc/www.png</file>
         <file>rc/overseg.png</file>
+        <file>rc/oversegview.png</file>
     </qresource>
 </RCC>
