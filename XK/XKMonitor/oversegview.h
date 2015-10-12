@@ -9,7 +9,7 @@
 namespace Ui {
 class OverSegView;
 }
-
+using namespace XKCommon;
 class OverSegView : public QWidget
 {
     Q_OBJECT
@@ -17,6 +17,11 @@ class OverSegView : public QWidget
 public:
     explicit OverSegView(QWidget *parent = 0);
     ~OverSegView();
+protected:
+    void showSuperVoxel(
+            SuperVoxelClusters&,
+            SuperVoxelAdjacency&
+            );
 protected slots:
     void showFromFile(void);
     void showFromProc(void);
