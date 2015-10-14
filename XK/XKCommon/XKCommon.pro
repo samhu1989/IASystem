@@ -13,7 +13,8 @@ DEFINES += XKCOMMON_LIBRARY
 
 SOURCES += \
     supervoxel_clustering.cpp \
-    xkcommon.cpp
+    xkcommon.cpp \
+    elm.cpp
 
 CONFIG(release, debug|release): DESTDIR = $$OUT_PWD/../../../IASystem_RunTime/bin
 
@@ -32,7 +33,8 @@ HEADERS += xkcommon.h\
     octree/octree_nodes.h \
     octree/octree_pointcloud.h \
     octree/octree_pointcloud_adjacency.h \
-    octree/octree_pointcloud_adjacency_container.h
+    octree/octree_pointcloud_adjacency_container.h \
+    elm.h
 
 unix {
     target.path = /usr/lib
