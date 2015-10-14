@@ -22,6 +22,23 @@ protected:
             SuperVoxelClusters&,
             SuperVoxelAdjacency&
             );
+    void addVoxelCentroidCloudToViewer(
+            SuperVoxelClusters&
+            );
+    void generateColoredCloud(
+            uint32_t,
+            SuperVoxel&,
+            ColorPointCloud&
+            );
+    void addVoxelColoredCloudToViewer(
+            SuperVoxelClusters&
+            );
+//    void addSupervoxelConnectionsToViewer (
+//            ColorPoint &supervoxel_center,
+//            ColorPointCloud &adjacent_supervoxel_centers,
+//            const std::string& supervoxel_name
+//            );
+
 protected slots:
     void showFromFile(void);
     void showFromProc(void);
