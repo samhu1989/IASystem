@@ -166,6 +166,43 @@ public:
     virtual int work(void); //do computation
     virtual int saveToData(void); //save result to global buffer
 };
+namespace pcl{
+template <typename PointT> void
+removeZeroFromPointCloud (const pcl::PointCloud<PointT> &cloud_in, pcl::PointCloud<PointT> &cloud_out,
+                               std::vector<int> &index)
+{
+    // If the clouds are not the same, prepare the output
+    if (&cloud_in != &cloud_out)
+    {
+        cloud_out.header = cloud_in.header;
+        cloud_out.points.resize (cloud_in.points.size ());
+    }
+    // Reserve enough space for the indices
+    index.resize (cloud_in.points.size ());
+    size_t j = 0;
+
+    // If the data is dense, we don't need to check for NaN
+    for (size_t i = 0; i < cloud_in.points.size (); ++i)
+    {
+        if (0==cloud_in.points[i].x||
+                0==cloud_in.points[i].y||
+                0==cloud_in.points[i].z)
+            continue;
+        cloud_out.points[j] = cloud_in.points[i];
+        index[j] = static_cast<int>(i);
+        j++;
+    }
+    if (j != cloud_in.points.size ())
+    {
+        // Resize to the correct size
+        cloud_out.points.resize (j);
+        index.resize (j);
+        cloud_out.height = 1;
+        cloud_out.width  = static_cast<uint32_t>(j);
+    }
+
+}
+}
 
 #define LACK_CONFIG(a) Pipe::warn("Missing Config: "+a)
 #define NECESSARY_CONFIG() Pipe::error("The Missing Config is Mandatory")

@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <pcl/registration/transformation_estimation_svd.h>
 #include "icp.h"
+#include <pcl/features/normal_3d_omp.h>
 FormatTools::FormatTools(QWidget *parent) :
     QFrame(parent),
     ui(new Ui::FormatTools)
@@ -172,12 +173,31 @@ void FormatTools::save(void)
     }
     if(fileNamesList.empty())return;
     QString fname = fileNamesList[0];
+    //estimate normal for point cloud before save
+    pcl::search::KdTree<FullPoint>::Ptr tree (new pcl::search::KdTree<FullPoint> ());
+    pcl::NormalEstimationOMP<FullPoint,FullPoint> est;
+    est.setSearchMethod (tree);
+    est.setViewPoint(0,0,0);
+    est.setInputCloud(cloud);
+    est.setKSearch(10);
+    est.compute(*cloud);
     if(fname.endsWith(".pcd")||fname.endsWith(".PCD"))
     {
         pcl::io::savePCDFileBinary<FullPoint>(fname.toStdString(),*cloud);
     }else if(fname.endsWith(".PLY")||fname.endsWith(".ply"))
     {
-        pcl::io::savePLYFileBinary(fname.toStdString(),*cloud);
+        sensor_msgs::PointCloud2Ptr tmp(new sensor_msgs::PointCloud2);
+        std::vector<int> indexes;
+        pcl::removeNaNFromPointCloud(*cloud,*cloud,indexes);
+        pcl::removeZeroFromPointCloud(*cloud,*cloud,indexes);
+        pcl::toROSMsg(*cloud,*tmp);
+        pcl::io::savePLYFile(
+                    fname.toStdString(),
+                    *tmp,
+                    Eigen::Vector4f::Zero(),
+                    Eigen::Quaternionf::Identity(),
+                    false,false
+                    );
     }else{
         pcl::io::savePCDFileBinary<FullPoint>(fname.toStdString()+".pcd",*cloud);
     }
