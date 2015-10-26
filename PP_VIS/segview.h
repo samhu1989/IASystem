@@ -29,6 +29,7 @@ public slots:
     void reset(void);
     void reLoad(void);
     void save(void);
+    void exportSelected(void);
 protected:
 
     void updateSeg(void);
@@ -42,6 +43,7 @@ protected:
     void biCut(FullPointCloud::Ptr patch,pcl::ModelCoefficients::Ptr coeff,std::vector<int>& reseg);
     void regionCut(FullPointCloud::Ptr patch,pcl::ModelCoefficients::Ptr coeff,std::vector<int>& reseg);
     void updateIdMap(unsigned int idx,std::vector<int>& reseg);
+    void exportPatch(unsigned int segidx, const QString &);
 
 private:
     std::vector<int> _PickedIndex;

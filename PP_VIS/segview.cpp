@@ -4,6 +4,8 @@
 #include <pcl/filters/extract_indices.h>
 #include <pcl/features/normal_3d_omp.h>
 #include "region_growing.h"
+#include <QFileDialog>
+#include <pcl/io/ply_io.h>
 SegView::SegView(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SegView)
@@ -27,7 +29,8 @@ SegView::SegView(QWidget *parent) :
     connect(ui->toolButton_2,SIGNAL(clicked(bool)),this,SLOT(next()));
     connect(ui->toolButton_3,SIGNAL(clicked(bool)),this,SLOT(reSeg()));
     connect(ui->toolButton_4,SIGNAL(clicked(bool)),this,SLOT(save()));
-    connect(ui->toolButton_5,SIGNAL(clicked(bool)),this,SLOT(reset()));
+    connect(ui->toolButton_5,SIGNAL(clicked(bool)),this,SLOT(exportSelected()));
+    connect(ui->toolButton_6,SIGNAL(clicked(bool)),this,SLOT(reset()));
 }
 
 void SegView::next(void)
@@ -49,6 +52,42 @@ void SegView::save(void)
 {
     Pipe::_PipeData.remove(_IdMapKeyList[currentFrame]);
     Pipe::addToData(idmap,_IdMapKeyList[currentFrame],idinfo);
+}
+
+void SegView::exportSelected(void)
+{
+    if(_PickedIndex.empty())return;
+    QString fileName = QFileDialog::getSaveFileName(this,
+        tr("Export Selected Patch"),
+        tr("./data/"),
+        tr("PLY Files (*.ply);;"
+           "PCD Files (*.pcd);;"));
+    int segidx = idmap.at<int>(0,_PickedIndex[0]);
+    if(segidx<1)return;
+    if(fileName.isEmpty())return;
+    exportPatch( segidx, fileName );
+}
+
+void SegView::exportPatch(unsigned int segidx,const QString& filename)
+{
+    FullPointCloud::Ptr ptr = extractPatchCloud(segidx);
+    if( filename.endsWith(".pcd") || filename.endsWith(".PCD") )
+        pcl::io::savePCDFileBinary(filename.toStdString(),*ptr);
+    if( filename.endsWith(".ply") || filename.endsWith("PLY"))
+    {
+        sensor_msgs::PointCloud2Ptr tmp(new sensor_msgs::PointCloud2);
+        std::vector<int> indexes;
+        pcl::removeNaNFromPointCloud(*ptr,*ptr,indexes);
+        pcl::removeZeroFromPointCloud(*ptr,*ptr,indexes);
+        pcl::toROSMsg(*ptr,*tmp);
+        pcl::io::savePLYFile(
+                    filename.toStdString(),
+                    *tmp,
+                    Eigen::Vector4f::Zero(),
+                    Eigen::Quaternionf::Identity(),
+                    false,false
+                    );
+    }
 }
 
 void SegView::reSeg(void)

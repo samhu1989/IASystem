@@ -48,7 +48,7 @@
         <string>Last</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../XK/XKMonitor/rc.qrc">
          <normaloff>:/button/rc/cloud-up.png</normaloff>:/button/rc/cloud-up.png</iconset>
        </property>
        <property name="iconSize">
@@ -80,7 +80,7 @@
         <string>Next</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../XK/XKMonitor/rc.qrc">
          <normaloff>:/button/rc/cloud-down.png</normaloff>:/button/rc/cloud-down.png</iconset>
        </property>
        <property name="iconSize">
@@ -112,7 +112,7 @@
         <string>Re-Seg</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../XK/XKMonitor/rc.qrc">
          <normaloff>:/button/rc/cloud-refresh.png</normaloff>:/button/rc/cloud-refresh.png</iconset>
        </property>
        <property name="iconSize">
@@ -138,7 +138,7 @@
         <string>Save</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../XK/XKMonitor/rc.qrc">
          <normaloff>:/button/rc/cloud-check.png</normaloff>:/button/rc/cloud-check.png</iconset>
        </property>
        <property name="iconSize">
@@ -161,10 +161,36 @@
         </size>
        </property>
        <property name="text">
+        <string>Export</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../XK/XKMonitor/rc.qrc">
+         <normaloff>:/button/rc/revert-256.png</normaloff>:/button/rc/revert-256.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextUnderIcon</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButton_6">
+       <property name="minimumSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
+       </property>
+       <property name="text">
         <string>Reset</string>
        </property>
        <property name="icon">
-        <iconset>
+        <iconset resource="../XK/XKMonitor/rc.qrc">
          <normaloff>:/button/rc/cloud-error.png</normaloff>:/button/rc/cloud-error.png</iconset>
        </property>
        <property name="iconSize">
@@ -182,6 +208,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../XK/XKMonitor/rc.qrc"/>
+ </resources>
  <connections/>
 </ui>
